@@ -3,6 +3,18 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 
+from django.contrib.auth.models import User
+
+class UsersRatedRecord(models.Model):
+    user_pk = models.IntegerField()
+    rating  = models.IntegerField()
+    
+    def __str__(self):
+        username = str(User.objects.get(pk=self.user_pk))
+        return 'Rating Record< User: ' + username + ', Rating: ' + str(self.rating) + ' >'
+
+
+
 # автоматическое создание уникального слага
 def gen_slug(s):
     new_slug = slugify(s, allow_unicode=True)
@@ -32,6 +44,24 @@ class Offer(models.Model):
         default=ACTIVE,
     )
 
+    users_rated = models.ManyToManyField(UsersRatedRecord, blank=True)
+
+    def has_user_rated(self, user):
+        record = self.users_rated.filter(user_pk=user.pk)
+        if record.count() == 0:
+            return None 
+        return record[0].rating 
+    
+    def delete_user_rated(self, user):
+        record = self.users_rated.filter(user_pk=user.pk)
+        if record.count() == 0:
+            return
+        record[0].delete()
+    
+    def add_user_rated(self, user, rating):
+        return self.users_rated.create(user_pk=user.pk, rating=rating)
+
+        
     def save(self, *args, **kwargs):
         if not self.id:
             self.slug = gen_slug(self.title)
@@ -46,3 +76,6 @@ class Offer(models.Model):
 
     class Meta:
         ordering = ['-rating']
+
+
+

@@ -120,12 +120,31 @@ class OfferUpdate(LoginRequiredMixin, View):
 
 
 def rate_offer(request):
-    # TODO: Проверку на существование оценки от пользователя!
+    
     if request.method == 'POST':
-        if request.user.is_authenticated:
+        user = request.user
+        if user.is_authenticated:
             pk = int(request.POST.get('offer_pk', ''))
-            ispositive = request.POST.get('ispositive', '') == 'true'
+            rate = 1 if request.POST.get('ispositive', '') == 'true' else -1
             curoffer = Offer.objects.get(pk=pk)
-            curoffer.rating += 1 if ispositive else -1
+            
+            response = ''
+            oldrate = curoffer.has_user_rated(user)
+            if oldrate == None:
+                curoffer.add_user_rated(user, rate)
+                curoffer.rating += rate
+                response = 'true,false' if rate > 0 else 'false,true'
+            elif (rate > 0 and oldrate < 0) or (rate < 0 and oldrate > 0):
+                curoffer.rating += rate - oldrate
+                curoffer.delete_user_rated(user) 
+                curoffer.add_user_rated(user, rate) 
+                response = 'true,false' if rate > 0 and oldrate < 0 else 'false,true'
+            else:
+                curoffer.rating -= oldrate
+                curoffer.delete_user_rated(user)
+                response = 'false,false'
+           
             curoffer.save()
-            return HttpResponse('')
+            
+            return HttpResponse(response)
+    return HttpResponse('error')
