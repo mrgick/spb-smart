@@ -115,21 +115,18 @@ class OfferUpdate(LoginRequiredMixin, View):
             return render(request, 'offer/offer_update.html', {
                 'form': bound_form, 
                 'offer': offer,
-                'hasrated': offer.has_user_rated(request.user) != None,
                 })
 
     def post(self, request, slug):
         if request.user.is_staff:
             offer = Offer.objects.get(slug__iexact=slug)
             bound_form = OfferForm(request.POST, instance=offer)
-            hasrated = offer.has_user_rated(request.user) != None
             if bound_form.is_valid():
                 new_post = bound_form.save()
                 return redirect('top_offers_url')
             return render(request, 'offer/offer_update.html', {
                 'form': bound_form, 
                 'offer': offer, 
-                'hasrated': hasrated,
                 })
 
 
