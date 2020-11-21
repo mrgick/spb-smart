@@ -1,0 +1,23 @@
+{% extends 'offer/offer_base.html' %}
+
+{% block title %}
+    Создание предложения {{ block.super }}
+{% endblock %}
+
+{% block content %}
+
+    <form action="{% url 'offer_create' %}" method="post">
+        {% csrf_token %}
+        <h5>Назавание</h5>
+        {{ form.title }}
+        <h5>Описание</h5>
+        {{ form.body }}
+        <h5>url-ссылка на фотографию</h5>
+        {{ form.img }}
+
+        <p></p>
+        <button type="submit" class="btn btn-primary btn-dark">Создать</button>
+
+    </form>
+    
+{% endblock %}
