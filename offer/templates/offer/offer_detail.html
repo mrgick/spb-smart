@@ -22,11 +22,12 @@
     <div class="text-right">
     {% if user.is_authenticated and offer.oftype == "ac"%}
           <div class="btn-group">
-            <button type="button" onclick="onrate(event.currentTarget.value, true)" value={{ offer.pk }} class="btn btn-sm btn-outline-secondary">+1</button>
-            <button type="button" onclick="onrate(event.currentTarget.value, false)" value={{ offer.pk }} class="btn btn-sm btn-outline-secondary">-1</button>
+            <button type="button" onclick="onrate(event.currentTarget, true)" value={{ offer.pk }} class="btn btn-sm btn-outline-secondary">+1</button>
+            <button type="button" onclick="onrate(event.currentTarget, false)" value={{ offer.pk }} class="btn btn-sm btn-outline-secondary">-1</button>
+</div>
 </div>
     {% endif %}
-</div>
+
     <p></p>
     <div class="text-right">
         <p>
@@ -38,8 +39,16 @@
     {% csrf_token %}
     <script>
         const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-        function onrate(offer_pk, ispositive) {
+        function onrate(element, ispositive) {
                     var request = new XMLHttpRequest();
+                    
+                    request.onreadystatechange = function() {
+                            if (this.readyState == 4 && this.status == 200) {
+                                // alert(element);
+                                element.color = 'BLUE';
+                            }
+                        };
+                    
                     request.open("POST", '/rateoffer/', true);
                     
                     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -48,7 +57,7 @@
                     request.setRequestHeader('X-CSRFToken', csrftoken); 
                     //
                     
-                    request.send('offer_pk=' + offer_pk + '&ispositive=' + ispositive);
+                    request.send('offer_pk=' + element.value + '&ispositive=' + ispositive);
                 }
                 
     </script>
