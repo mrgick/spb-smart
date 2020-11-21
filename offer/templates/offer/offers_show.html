@@ -1,0 +1,18 @@
+{% extends 'offer/offer_base.html' %}
+
+{% block title %}
+    {{ page_titile }}
+{% endblock %}
+
+{% block content %}
+    <div class="text-center">
+        <h1 class="mb-5 mt-4"> {{ page_titile }}</h1>
+    </div>
+    <div class="container">
+      <div class="row">
+        {% for offer in page_object.object_list %}
+            	{% include 'offer/includes/offer_card_template.html' %}
+        {% endfor %}
+      </div>
+    </div>
+{% endblock %}

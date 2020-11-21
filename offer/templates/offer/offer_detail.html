@@ -1,0 +1,65 @@
+{% extends 'offer/offer_base.html' %}
+
+{% block title %}
+    {{ offer.title }}
+{% endblock %}
+
+
+{% block content %}
+    <h1 class="mt-4">
+        {{ offer.title }}
+    </h1>
+    <p>
+        <img src="{{ offer.img }}" class="card-img-top" alt="">
+    </p>
+    <p>
+        Описание:
+    </p>
+    <p>
+        {{ offer.body }}
+    </p>
+    <a  class="card-text">Рейтинг: {{ offer.rating}}</a>
+    <div class="text-right">
+    {% if user.is_authenticated and offer.oftype == "ac"%}
+          <div class="btn-group">
+            <button type="button" onclick="onrate(event.currentTarget, true)" value={{ offer.pk }} class="btn btn-sm btn-outline-secondary">+1</button>
+            <button type="button" onclick="onrate(event.currentTarget, false)" value={{ offer.pk }} class="btn btn-sm btn-outline-secondary">-1</button>
+</div>
+</div>
+    {% endif %}
+
+    <p></p>
+    <div class="text-right">
+        <p>
+            был создан: {{ offer.date_pub }}
+        </p>
+    </div>
+    <p></p>
+    
+    {% csrf_token %}
+    <script>
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        function onrate(element, ispositive) {
+                    var request = new XMLHttpRequest();
+                    
+                    request.onreadystatechange = function() {
+                            if (this.readyState == 4 && this.status == 200) {
+                                // alert(element);
+                                element.color = 'BLUE';
+                            }
+                        };
+                    
+                    request.open("POST", '/rateoffer/', true);
+                    
+                    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                    
+                    // CSRF Token
+                    request.setRequestHeader('X-CSRFToken', csrftoken); 
+                    //
+                    
+                    request.send('offer_pk=' + element.value + '&ispositive=' + ispositive);
+                }
+                
+    </script>
+    
+{% endblock %}
