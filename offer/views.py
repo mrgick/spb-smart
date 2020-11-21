@@ -1,4 +1,5 @@
 from django.shortcuts import render, reverse, get_object_or_404, redirect, HttpResponse
+from django.http import JsonResponse
 from offer.models import Offer
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
@@ -80,9 +81,14 @@ class OfferDetail(View):
 
     def get(self, request, slug):
         obj = get_object_or_404(self.model, slug__exact=slug)
+        rating = obj.has_user_rated(request.user)
+        ratedpos = rating != None and rating > 0 
         return render(request, self.template, {self.model.__name__.lower(): obj,
                                                'admin_object': obj,
-                                               'detail': True})
+                                               'detail': True,
+                                               'hasrated': rating != None,
+                                               'ratedpos': ratedpos,
+                                               })
 #offer create
 class OfferCreate(LoginRequiredMixin, View):
     raise_exception = True
@@ -106,17 +112,25 @@ class OfferUpdate(LoginRequiredMixin, View):
         if request.user.is_staff:
             offer = Offer.objects.get(slug__iexact=slug)
             bound_form = OfferForm(instance=offer)
-            return render(request, 'offer/offer_update.html', {'form': bound_form, 'offer': offer})
+            return render(request, 'offer/offer_update.html', {
+                'form': bound_form, 
+                'offer': offer,
+                'hasrated': offer.has_user_rated(request.user) != None,
+                })
 
     def post(self, request, slug):
         if request.user.is_staff:
             offer = Offer.objects.get(slug__iexact=slug)
             bound_form = OfferForm(request.POST, instance=offer)
-
+            hasrated = offer.has_user_rated(request.user) != None
             if bound_form.is_valid():
                 new_post = bound_form.save()
                 return redirect('top_offers_url')
-            return render(request, 'offer/offer_update.html', {'form': bound_form, 'offer': offer})
+            return render(request, 'offer/offer_update.html', {
+                'form': bound_form, 
+                'offer': offer, 
+                'hasrated': hasrated,
+                })
 
 
 def rate_offer(request):
@@ -128,23 +142,34 @@ def rate_offer(request):
             rate = 1 if request.POST.get('ispositive', '') == 'true' else -1
             curoffer = Offer.objects.get(pk=pk)
             
-            response = ''
+            response = {'rating': 0, 'posbutton': False, 'negbutton': False }
             oldrate = curoffer.has_user_rated(user)
             if oldrate == None:
                 curoffer.add_user_rated(user, rate)
                 curoffer.rating += rate
-                response = 'true,false' if rate > 0 else 'false,true'
+                if rate > 0:  
+                    response['posbutton'] = True 
+                    response['negbutton'] = False 
+                else: 
+                    response['posbutton'] = False 
+                    response['negbutton'] = True 
             elif (rate > 0 and oldrate < 0) or (rate < 0 and oldrate > 0):
                 curoffer.rating += rate - oldrate
                 curoffer.delete_user_rated(user) 
                 curoffer.add_user_rated(user, rate) 
-                response = 'true,false' if rate > 0 and oldrate < 0 else 'false,true'
+                if rate > 0 and oldrate < 0:  
+                    response['posbutton'] = True 
+                    response['negbutton'] = False 
+                else: 
+                    response['posbutton'] = False 
+                    response['negbutton'] = True 
             else:
                 curoffer.rating -= oldrate
                 curoffer.delete_user_rated(user)
-                response = 'false,false'
            
             curoffer.save()
+            response['rating'] = curoffer.rating
             
-            return HttpResponse(response)
-    return HttpResponse('error')
+            return JsonResponse(response)
+    
+    return JsonResponse({'error': True})

@@ -49,7 +49,7 @@ class Offer(models.Model):
     def has_user_rated(self, user):
         record = self.users_rated.filter(user_pk=user.pk)
         if record.count() == 0:
-            return None 
+            return None
         return record[0].rating 
     
     def delete_user_rated(self, user):

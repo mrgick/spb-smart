@@ -18,12 +18,15 @@
     <p>
         {{ offer.body }}
     </p>
-    <a  class="card-text">Рейтинг: {{ offer.rating}}</a>
+    
+    <a  class="card-text" >Рейтинг: </a>
+    <a class="card-text" id="rating" >{{ offer.rating }}</a>
     <div class="text-right">
+    
     {% if user.is_authenticated and offer.oftype == "ac"%}
           <div class="btn-group">
-            <button type="button" onclick="onrate(event.currentTarget, true)" value={{ offer.pk }} class="btn btn-sm btn-outline-secondary">+1</button>
-            <button type="button" onclick="onrate(event.currentTarget, false)" value={{ offer.pk }} class="btn btn-sm btn-outline-secondary">-1</button>
+            <button type="button" id="rate_pos" onclick="onrate(event.currentTarget.value, true, 'rating', 'rate_pos', 'rate_neg')" value={{ offer.pk }} {% if hasrated and ratedpos %} class="btn btn-primary active" {% else %} class="btn btn-sm btn-outline-secondary" {% endif %}  >+1</button>
+            <button type="button" id="rate_neg" onclick="onrate(event.currentTarget.value, false, 'rating', 'rate_pos', 'rate_neg')" value={{ offer.pk }} {% if hasrated and not ratedpos %} class="btn btn-primary active" {% else %} class="btn btn-sm btn-outline-secondary" {% endif %}>-1</button>
 </div>
 </div>
     {% endif %}
@@ -39,17 +42,31 @@
     {% csrf_token %}
     <script>
         const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-        function onrate(element, ispositive) {
+        function onrate(offer_pk, ispositive, rating_id, posbutton_id, negbutton_id) {
                     var request = new XMLHttpRequest();
                     
                     request.onreadystatechange = function() {
                             if (this.readyState == 4 && this.status == 200) {
-                                // alert(element);
-                                element.color = 'BLUE';
+                                var response = request.response;
+                                document.getElementById(rating_id).innerHTML = response['rating'];
+                                var posbutt = document.getElementById(posbutton_id);
+                                var negbutt = document.getElementById(negbutton_id);
+                                if (response['posbutton']) {
+                                    posbutt.className = 'btn btn-primary active';
+                                } else {
+                                    posbutt.className = 'btn btn-sm btn-outline-primary';
+                                }
+                                
+                                if (response['negbutton']) {
+                                    negbutt.className = 'btn btn-primary active';
+                                } else {
+                                    negbutt.className = 'btn btn-sm btn-outline-secondary';
+                                }
                             }
                         };
                     
                     request.open("POST", '/rateoffer/', true);
+                    request.responseType = 'json';
                     
                     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                     
@@ -57,7 +74,7 @@
                     request.setRequestHeader('X-CSRFToken', csrftoken); 
                     //
                     
-                    request.send('offer_pk=' + element.value + '&ispositive=' + ispositive);
+                    request.send('offer_pk=' + offer_pk + '&ispositive=' + ispositive);
                 }
                 
     </script>
