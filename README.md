@@ -3,7 +3,8 @@
 Вы можете посмотреть сайт на http://nick100lay.pythonanywhere.com/.
 
 ***
-## Люди, участвовавшие в создании прототипа:
+## Команда Code&Luck
+### Люди, участвовавшие в создании прототипа:
 1. <a href="https://github.com/mrgick/">Максим Малахов</a>
 2. <a href="https://github.com/miha6g/">Михаил Филиппов</a>
 3. <a href="https://github.com/tweek36/">Юрий Соваков</a>
