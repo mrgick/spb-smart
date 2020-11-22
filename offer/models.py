@@ -15,12 +15,10 @@ class UsersRatedRecord(models.Model):
 
 
 
-# автоматическое создание уникального слага
 def gen_slug(s):
     new_slug = slugify(s, allow_unicode=True)
     return new_slug + '-' + str(int(time()))
 
-# класс Предложение
 class Offer(models.Model):
     title = models.CharField(max_length=150, db_index=True)
     slug = models.TextField(max_length=150, unique=True, blank=True)
@@ -46,7 +44,7 @@ class Offer(models.Model):
 
     users_rated = models.ManyToManyField(UsersRatedRecord, blank=True)
 
-    def has_user_rated(self, user):
+    def has_user_rated(self, user): # Return an user rate. None if not valid  
         record = self.users_rated.filter(user_pk=user.pk)
         if record.count() == 0:
             return None
