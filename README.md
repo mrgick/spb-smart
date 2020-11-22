@@ -10,9 +10,8 @@
 5. <a href="https://vk.com/idgoner21/">Егор Гаврилов</a>
 *** 
 >Использовался фреймворк "<a href="https://www.djangoproject.com/">Django 3</a>".
-
-## Запуск сервера локально
 ***
+## Запуск сервера локально
 ### Что нужно сделать:
 1. Установить <a href="https://www.python.org/">python</a> версии 3.8.6 вместе с <a href="https://pypi.org/project/pip/">pip</a>
 2. Открыть терминал (cmd.exe на Windows) и прописать pip install Django=3.1.3 
