@@ -129,7 +129,7 @@ class OfferUpdate(LoginRequiredMixin, View):
                 'offer': offer, 
                 })
 
-
+#Rating func
 def rate_offer(request):
     
     if request.method == 'POST':
