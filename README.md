@@ -5,12 +5,12 @@
 ***
 ## Команда Code&Luck
 ### Люди, участвовавшие в создании прототипа:
-1. <a href="https://github.com/mrgick/">Максим Малахов</a>
-2. <a href="https://github.com/miha6g/">Михаил Филиппов</a>
-3. <a href="https://github.com/tweek36/">Юрий Соваков</a>
-4. <a href="https://github.com/nick100lay/">Николай Обухов</a>
-5. <a href="https://vk.com/idgoner21/">Егор Гаврилов</a>
-*** 
+1. <b>Капитан </b><a href="https://github.com/mrgick/">Максим Малахов</a> <i>(кодинг, дизайн и презентация)</i>
+2. <a href="https://github.com/miha6g/">Михаил Филиппов</a> <i>(Дизайн и презентация)</i>
+3. <a href="https://github.com/tweek36/">Юрий Соваков</a> <i>(Кодинг)</i>
+4. <a href="https://github.com/nick100lay/">Николай Обухов</a> <i>(Кодинг и настройка)</i>
+5. <a href="https://vk.com/idgoner21/">Егор Гаврилов</a> <i>(Видео и презентация)</i>
+***
 
 >Использовался фреймворк "<a href="https://www.djangoproject.com/">Django 3</a>".
 
