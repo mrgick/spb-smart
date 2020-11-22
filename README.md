@@ -10,3 +10,12 @@
 5. <a href="https://vk.com/idgoner21/">Егор Гаврилов</a>
 *** 
 >Использовался фреймворк "<a href="https://www.djangoproject.com/">Django 3</a>".
+
+## Запуск сервера локально
+***
+Для запуска нужно установить 
+1. python версии 3.8.6
+2. django версии 3.1.3
+3. открыть cmd в папке с файлом manage.py
+4. прописать в cmd: python manage.py runserver
+***
