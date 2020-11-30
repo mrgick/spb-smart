@@ -6,11 +6,11 @@
 ***
 ## Команда Code&Luck (ПсковГУ)
 ### Люди, участвовавшие в создании прототипа:
-1. <b>Капитан </b><a href="https://github.com/mrgick/">Максим Малахов</a> <i>(Кодинг, дизайн и презентация)</i>
-2. <a href="https://github.com/miha6g/">Михаил Филиппов</a> <i>(Дизайн и презентация)</i>
-3. <a href="https://github.com/tweek36/">Юрий Соваков</a> <i>(Кодинг)</i>
-4. <a href="https://github.com/nick100lay/">Николай Обухов</a> <i>(Кодинг и настройка)</i>
-5. <a href="https://vk.com/idgoner21/">Егор Гаврилов</a> <i>(Видео и презентация)</i>
+1. <b>Капитан </b><a href="https://github.com/mrgick/">mrgick</a> <i>(Кодинг, дизайн и презентация)</i>
+2. <a href="https://github.com/miha6g/">miha6g</a> <i>(Дизайн и презентация)</i>
+3. <a href="https://github.com/tweek36/">tweek36</a> <i>(Кодинг)</i>
+4. <a href="https://github.com/nick100lay/">nick100lay</a> <i>(Кодинг и настройка)</i>
+5. <a>Егор</a> <i>(Видео и презентация)</i>
 ***
 
 >Использовался фреймворк "<a href="https://www.djangoproject.com/">Django 3</a>".
@@ -18,9 +18,6 @@
 ***
 ## Тестовые пользователи (логин: пароль):
 * <b>admin: admin</b> - суперпользователь
-* <b>moder0: Q1w2e3r4!</b> - пользователь с группой moderator
-* <b>vlast: Q1w2e3r4!</b> - пользователь с группой vlast
-* <b>user: Q1w2e3r4!</b> - обычный пользователь
 ***
 
 ***
